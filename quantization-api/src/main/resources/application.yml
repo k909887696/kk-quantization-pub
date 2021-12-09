@@ -1,0 +1,78 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: quantization-api
+  datasource:
+    name: mybatis_test
+    #使用druid连接池
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #配置基本属性
+    url: jdbc:mysql://127.0.0.1:3306/quantization?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+    username: root
+    password: -random8201227
+    #druid相关配置
+    druid:
+      #监控统计拦截的filters
+      filters: stat
+      #配置初始化大小/最小/最大
+      initial-size: 5
+      min-idle: 5
+      max-active: 30
+      #获取连接等待超时时间
+      max-wait: 60000
+      #间隔多久进行一次检测，检测需要关闭的空闲连接
+      time-between-eviction-runs-millis: 60000
+      #一个连接在池中最小生存的时间
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
+      pool-prepared-statements: false
+      max-pool-prepared-statement-per-connection-size: 20
+  main:
+    allow-circular-references: true
+  #解决2.6.0版本整合swagger报错问题 Failed to start bean 'documentationPluginsBootstrapper'
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+#mybatis:
+#  configuration:
+#    map-underscore-to-camel-case: true
+#  # 映射文件所在路径
+#  mapper-locations: classpath:mappers/*.xml
+#  # pojo类所在包路径
+#  type-aliases-package: com.kk.quantizationapi.dao.entity
+
+mybatis-plus:
+  # 原生配置
+  configuration:
+    map-underscore-to-camel-case: true
+  # 映射文件所在路径
+  mapper-locations: classpath*:mappers/*.xml
+  # pojo类所在包路径
+  type-aliases-package: com.kk.quantizationapi.dao.entity
+  log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+
+#pagehelper分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: true # #启用合理化时，如果pageNum<1会查询第一页，如果pageNum>总页数会查询最后一页； #禁用合理化时，如果pageNum<1或pageNum>总页数会返回空数据。
+  supportMethodsArguments: true #支持通过Mapper接口参数来传递分页参数，默认值false，分页插件会从查询方法的参数值中，自动根据上面 params 配置的字段中取值，查找到合适的值时就会自动分页。
+  params: count=countSql #为了支持startPage(Object params)方法，增加了该参数来配置参数映射，用于从对象中根据属性名取值; 可以配置 pageNum,pageSize,count,pageSizeZero,reasonable，不配置映射的用默认值， 默认值为pageNum=pageNum;pageSize=pageSize;count=countSql;reasonable=reasonable;pageSizeZero=pageSizeZero。
+
+swagger:
+  enable: true
+  application-name: ${spring.application.name}
+  application-version: 1.0
+  application-description: 量化系统
+
+logging:
+  level:
+    root=debug: Debug
+    com.kk.quantizationapi.dao.mapper: debug

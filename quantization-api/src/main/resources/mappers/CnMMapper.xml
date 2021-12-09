@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kk.quantizationapi.dao.mapper.CnMMapper">
+
+    <select id="getAll" resultType="com.kk.quantizationapi.dao.entity.CnM">
+        select * from cn_m;
+    </select>
+
+</mapper>
